@@ -1,4 +1,6 @@
 require('dotenv').config();
+const onCommandEnterEvent = require('./handlers/command-handler');
+const onMessageCreateEvent = require('./handlers/message-create-handler');
 
 const { Client, IntentsBitField } = require('discord.js');
 const client = new Client({
@@ -15,31 +17,16 @@ client.on('ready', (client) => {
     console.log(`${client.user.tag} is online 😀`);
 }) 
 
-// client.on('messageCreate', (message) => {
-//     if (message.author.bot) {
-//         return;
-//     }
-//     if (message.content === 'hi') {
-//         message.reply(`Hi! ${message.author.username}`);
-//     }
-//     console.log(message);
-// })
+client.on('messageCreate', (message) => {
+    if (message.author.bot) {
+        return;
+    }
+    onMessageCreateEvent(message);
+})
 
 client.on('interactionCreate', (interaction) => {
     if (!interaction.isChatInputCommand) return;
-
-    if (interaction.commandName === 'hey') {
-        interaction.reply('hey!')
-    }
-    if (interaction.commandName === 'ping') {
-        interaction.reply('pong!')
-    }
-    if (interaction.commandName === 'add') {
-        const num1 = interaction.options.get('first-number').value;
-        const num2 = interaction.options.get('second-number').value;
-
-        interaction.reply(`${num1} + ${num2} = ${num1 + num2}`)
-    }
+    onCommandEnterEvent(interaction);
 })
 
-client.login(process.env.TOKEN)
+client.login(process.env.TOKEN);

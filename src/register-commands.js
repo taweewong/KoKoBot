@@ -4,17 +4,16 @@
 */
 
 require('dotenv').config();
+const commands = require('./const/commands')
 
 const { REST, Routes, ApplicationCommand, ApplicationCommandOptionType } = require ('discord.js')
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
-export const commands = [
+console.log(commands)
+
+const commands_request = [
     {
-        name: 'hey',
-        description: 'Replies with hey!'
-    },
-    {
-        name: 'ping',
+        name: commands.PING_COMMAND,
         description: 'Replies with pong!'
     },
     {
@@ -63,7 +62,7 @@ export const commands = [
             }
         ]
     }
-]
+];
 
 (async () => {
     try {
@@ -74,7 +73,7 @@ export const commands = [
                 process.env.GUILD_ID
             ),
             { 
-                body: commands 
+                body: commands_request 
             }
         )
         console.log('Register slash commands successfully')
