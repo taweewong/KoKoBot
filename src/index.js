@@ -26,7 +26,9 @@ client.on('messageCreate', (message) => {
 
 client.on('interactionCreate', (interaction) => {
     if (!interaction.isChatInputCommand) return;
-    onCommandEnterEvent(interaction);
+    if (interaction.isCommand) {
+        onCommandEnterEvent(interaction);
+    }
 })
 
 client.login(process.env.TOKEN);
